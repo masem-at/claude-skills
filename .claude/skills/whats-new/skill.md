@@ -8,14 +8,26 @@ Wenn der User `/whats-new` aufruft oder nach neuen Claude Code Features fragt:
 
 ### 1. Release Notes holen
 
-Führe aus:
+Führe aus (ohne jq, funktioniert überall):
 ```bash
-curl -s https://api.github.com/repos/anthropics/claude-code/releases/latest | jq -r '.tag_name, .body'
+curl -s https://api.github.com/repos/anthropics/claude-code/releases/latest
 ```
 
-Oder für die letzten 5 Releases:
+Der Output ist JSON – parse die Felder `tag_name` und `body` direkt aus der Response.
+
+Für die letzten Releases:
 ```bash
-curl -s https://api.github.com/repos/anthropics/claude-code/releases | jq -r '.[:5][] | "## \(.tag_name)\n\(.body)\n"'
+curl -s "https://api.github.com/repos/anthropics/claude-code/releases?per_page=5"
+```
+
+Alternativ die CHANGELOG.md direkt:
+```bash
+curl -s https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | head -200
+```
+
+Aktuelle installierte Version:
+```bash
+claude --version
 ```
 
 ### 2. Projekt-Context laden
